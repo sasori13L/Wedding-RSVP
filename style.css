@@ -282,6 +282,41 @@ img { max-width: 100%; display: block; }
 .hero-photo-placeholder .placeholder-box p,
 .hero-photo-placeholder .placeholder-box span { color: var(--ivory); }
 
+/* Real photo variants: fill their container and crop gracefully at any
+   screen size instead of stretching or overflowing. */
+.hero-photo-placeholder img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+img.placeholder-box {
+  display: block;
+  min-height: 0;
+  background: none;
+  border: 1px solid var(--willow);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-placeholder img.map-box {
+  width: 100%;
+  height: clamp(240px, 40vw, 420px);
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.gallery-grid img.gallery-box {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
 /* ---------- Leaf dividers ---------- */
 .leaf-divider {
   display: flex;
