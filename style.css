@@ -520,11 +520,46 @@ img {
   animation-delay: 0.9s;
 }
 
+.hero-music-btn.reveal {
+  animation-delay: 1.05s;
+}
+
 @keyframes heroReveal {
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.hero-music-btn {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  border: none;
+  color: var(--willow);
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.hero-music-btn svg {
+  flex: 0 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.hero-music-btn:hover {
+  color: var(--ivory);
+  transform: translateY(-1px);
+}
+
+.hero-music-btn.is-playing svg {
+  transform: scale(0.9);
 }
 
 /* ---------- Placeholder boxes (generic) ---------- */
@@ -592,11 +627,12 @@ img.placeholder-box {
   object-fit: cover;
 }
 
-.map-placeholder img.map-box {
+.map-placeholder .map-embed {
   width: 100%;
   height: clamp(240px, 40vw, 420px);
-  object-fit: cover;
+  border: 0;
   border-radius: 4px;
+  display: block;
 }
 
 .gallery-grid img.gallery-box {
@@ -736,10 +772,6 @@ img.placeholder-box {
 .map-placeholder {
   max-width: var(--max-width);
   margin: 40px auto 0;
-}
-
-.map-box {
-  min-height: 320px;
 }
 
 /* ---------- Theme / attire ---------- */

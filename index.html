@@ -107,6 +107,12 @@
       </div>
       <p class="hero-date reveal">October 9, 2026 &nbsp;·&nbsp; Ritz Tower de Leyte</p>
       <a href="#rsvp" class="btn btn-outline reveal">RSVP</a>
+      <button class="hero-music-btn reveal" id="heroMusicBtn" aria-label="Play our theme song" aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M7 4.5v15l14-7.5z" />
+        </svg>
+        <span id="heroMusicLabel">Click to play our theme song</span>
+      </button>
     </div>
 
     <button class="scroll-cue" id="scrollCue" aria-label="Scroll to details">
@@ -222,16 +228,9 @@
     </div>
 
     <div class="map-placeholder">
-      <!-- REPLACE: swap this block with an embedded Google Map iframe for Ritz Tower de Leyte -->
-      <!-- <div class="placeholder-box map-box">
-      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.2">
-        <path d="M12 21s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z"/>
-        <circle cx="12" cy="9" r="2.4"/>
-      </svg>
-      <p>Map of Ritz Tower de Leyte</p>
-    </div> -->
-      <img class="placeholder-box map-box" src="https://i.gyazo.com/621013d3bc6bc691cc78642d22c1f922.jpg"
-        alt="Ritz Tower de Leyte Map" />
+      <iframe class="map-box map-embed" src="https://www.google.com/maps?q=Ritz+Tower+de+Leyte&output=embed"
+        title="Map of Ritz Tower de Leyte" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
     </div>
   </section>
 

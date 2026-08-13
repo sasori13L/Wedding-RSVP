@@ -115,15 +115,25 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Background music ---------- */
   const bgMusic = document.getElementById('bgMusic');
   const musicToggle = document.getElementById('musicToggle');
+  const heroMusicBtn = document.getElementById('heroMusicBtn');
+  const heroMusicLabel = document.getElementById('heroMusicLabel');
 
   function setPlayingState(isPlaying) {
-    if (!musicToggle) return;
-    musicToggle.classList.toggle('is-playing', isPlaying);
-    musicToggle.setAttribute('aria-pressed', String(isPlaying));
-    musicToggle.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music');
+    if (musicToggle) {
+      musicToggle.classList.toggle('is-playing', isPlaying);
+      musicToggle.setAttribute('aria-pressed', String(isPlaying));
+      musicToggle.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music');
+    }
+    if (heroMusicBtn) {
+      heroMusicBtn.classList.toggle('is-playing', isPlaying);
+      heroMusicBtn.setAttribute('aria-pressed', String(isPlaying));
+    }
+    if (heroMusicLabel) {
+      heroMusicLabel.textContent = isPlaying ? 'Now playing our theme song' : 'Click to play our theme song';
+    }
   }
 
-  if (bgMusic && musicToggle) {
+  if (bgMusic && (musicToggle || heroMusicBtn)) {
     let hasUnmutedOnce = false;
 
     // Browsers allow silent (muted) autoplay, so start the track muted
@@ -146,8 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener(evt, unmuteAndPlay, { once: true, passive: true });
     });
 
-    // Manual toggle button: also counts as the unmute interaction, then behaves as play/pause
-    musicToggle.addEventListener('click', () => {
+    function togglePlayPause() {
       if (!hasUnmutedOnce) {
         unmuteAndPlay();
         return;
@@ -158,7 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bgMusic.pause();
         setPlayingState(false);
       }
-    });
+    }
+
+    // Manual toggle buttons: also count as the unmute interaction, then behave as play/pause
+    musicToggle?.addEventListener('click', togglePlayPause);
+    heroMusicBtn?.addEventListener('click', togglePlayPause);
   }
 
   /* ---------- Loader ---------- */
