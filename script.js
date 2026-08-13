@@ -4,6 +4,157 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ---------- Lightbox ---------- */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const carouselImgs = Array.from(document.querySelectorAll('.carousel-img'));
+
+  if (lightbox && lightboxImage && carouselImgs.length) {
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const img = carouselImgs[currentIndex];
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt;
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function showRelative(direction) {
+      currentIndex = (currentIndex + direction + carouselImgs.length) % carouselImgs.length;
+      const img = carouselImgs[currentIndex];
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt;
+    }
+
+    carouselImgs.forEach((img, index) => {
+      img.addEventListener('click', () => openLightbox(index));
+    });
+
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', () => showRelative(-1));
+    lightboxNext?.addEventListener('click', () => showRelative(1));
+
+    // Click outside the image (on the dark backdrop) also closes it
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard support while lightbox is open
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showRelative(-1);
+      if (e.key === 'ArrowRight') showRelative(1);
+    });
+  }
+
+  /* ---------- Carousel ---------- */
+  const carouselTrack = document.getElementById('carouselTrack');
+  const carouselPrev = document.getElementById('carouselPrev');
+  const carouselNext = document.getElementById('carouselNext');
+  const carouselDotsWrap = document.getElementById('carouselDots');
+
+  if (carouselTrack && carouselDotsWrap) {
+    const slides = Array.from(carouselTrack.children);
+
+    // Build dot indicators
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Go to photo ${i + 1}`);
+      dot.addEventListener('click', () => {
+        slides[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+      carouselDotsWrap.appendChild(dot);
+      return dot;
+    });
+
+    function setActiveDot() {
+      const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+      slides.forEach((slide, i) => {
+        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+        const distance = Math.abs(slideCenter - trackCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
+        }
+      });
+      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === closestIndex));
+    }
+
+    setActiveDot();
+    carouselTrack.addEventListener('scroll', () => {
+      window.requestAnimationFrame(setActiveDot);
+    }, { passive: true });
+
+    function scrollByOneSlide(direction) {
+      const slide = slides[0];
+      const gap = 16;
+      const distance = (slide.clientWidth + gap) * direction;
+      carouselTrack.scrollBy({ left: distance, behavior: 'smooth' });
+    }
+
+    carouselPrev?.addEventListener('click', () => scrollByOneSlide(-1));
+    carouselNext?.addEventListener('click', () => scrollByOneSlide(1));
+  }
+
+  /* ---------- Background music ---------- */
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+
+  function setPlayingState(isPlaying) {
+    if (!musicToggle) return;
+    musicToggle.classList.toggle('is-playing', isPlaying);
+    musicToggle.setAttribute('aria-pressed', String(isPlaying));
+    musicToggle.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music');
+  }
+
+  if (bgMusic && musicToggle) {
+    // Try to autoplay as soon as the page loads.
+    const tryAutoplay = () => {
+      bgMusic.play()
+        .then(() => setPlayingState(true))
+        .catch(() => {
+          // Autoplay was blocked (standard browser policy for unmuted audio).
+          // Fall back to starting on the very first tap/click anywhere on the page.
+          setPlayingState(false);
+          const startOnFirstInteraction = () => {
+            bgMusic.play().then(() => setPlayingState(true)).catch(() => { });
+            document.removeEventListener('click', startOnFirstInteraction);
+            document.removeEventListener('touchstart', startOnFirstInteraction);
+          };
+          document.addEventListener('click', startOnFirstInteraction, { once: true });
+          document.addEventListener('touchstart', startOnFirstInteraction, { once: true });
+        });
+    };
+
+    tryAutoplay();
+
+    // Manual toggle button
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => setPlayingState(true)).catch(() => { });
+      } else {
+        bgMusic.pause();
+        setPlayingState(false);
+      }
+    });
+  }
+
   /* ---------- Loader ---------- */
   const loader = document.getElementById('loader');
   window.addEventListener('load', () => {

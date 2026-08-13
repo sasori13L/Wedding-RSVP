@@ -34,6 +34,16 @@
     </div>
   </div>
 
+  <!-- ============ BACKGROUND MUSIC ============ -->
+  <!-- REPLACE: point src at your chosen song, e.g. audio/our-song.mp3 -->
+  <audio id="bgMusic" src="audio/our-song.mp3" loop preload="auto"></audio>
+
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle background music" aria-pressed="false">
+    <span class="music-bars" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </span>
+  </button>
+
   <!-- ============ TOP RIBBON ============ -->
   <div class="ribbon">
     <span>Save the Date</span>
@@ -265,21 +275,70 @@
     </div>
   </section>
 
-  <!-- ============ GALLERY ============ -->
-  <section class="gallery-section reveal-on-scroll">
-    <p class="eyebrow">Moments</p>
-    <h2 class="section-title">Together</h2>
-    <div class="gallery-grid">
-      <!-- REPLACE: swap each placeholder div for <img src="images/gallery-1.jpg" alt="..."> -->
-      <img class=" gallery-box gallery-tall" src="images/gallery-1.webp" alt="Photo 1">
-      <img class=" gallery-box gallery-tall" src="images/gallery-2.webp" alt="Photo 2"
-        style="object-position: 30% 30%;">
-      <img class=" gallery-box gallery-tall" src="images/gallery-3.webp" alt="Photo 3">
-      <img class=" gallery-box gallery-tall" src="images/gallery-4.webp" alt="Photo 4">
-      <img class=" gallery-box gallery-tall" src="images/gallery-5.webp" alt="Photo 5">
-      <img class=" gallery-box gallery-tall" src="images/gallery-6.webp" alt="Photo 6"
-        style="object-position: 70% 50%;">
+  <!-- ============ CAROUSEL ============ -->
+  <section class="carousel-section reveal-on-scroll" id="carousel">
+    <div class="leaf-divider" aria-hidden="true">
+      <svg viewBox="0 0 260 74" width="240" height="68" fill="none">
+        <!-- flanking rules -->
+        <line x1="0" y1="37" x2="90" y2="37" stroke="currentColor" stroke-width="1" />
+        <line x1="170" y1="37" x2="260" y2="37" stroke="currentColor" stroke-width="1" />
+
+        <!-- crest rings -->
+        <circle cx="130" cy="37" r="28" stroke="currentColor" stroke-width="1" />
+        <circle cx="130" cy="37" r="23" stroke="currentColor" stroke-width="0.6" />
+
+        <!-- compass ticks -->
+        <rect x="127.5" y="6.5" width="5" height="5" transform="rotate(45 130 9)" fill="currentColor" />
+        <rect x="127.5" y="62.5" width="5" height="5" transform="rotate(45 130 65)" fill="currentColor" />
+        <rect x="98.5" y="34.5" width="5" height="5" transform="rotate(45 101 37)" fill="currentColor" />
+        <rect x="156.5" y="34.5" width="5" height="5" transform="rotate(45 159 37)" fill="currentColor" />
+
+        <!-- monogram -->
+        <text x="117" y="47" text-anchor="end" font-family="'Cormorant Garamond', serif" font-weight="600"
+          font-size="27" fill="currentColor">J</text>
+        <text x="130" y="41" text-anchor="middle" font-family="'Alex Brush', cursive" font-size="21"
+          fill="currentColor">&amp;</text>
+        <text x="143" y="47" text-anchor="start" font-family="'Cormorant Garamond', serif" font-weight="600"
+          font-size="27" fill="currentColor">M</text>
+      </svg>
     </div>
+    <p class="eyebrow">Moments In Motion</p>
+    <h2 class="section-title">A Closer Look</h2>
+
+    <div class="carousel">
+      <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M15 5l-7 7 7 7" />
+        </svg>
+      </button>
+
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-1.webp" alt="Photo 1"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-2.webp" alt="Photo 2"
+            style="object-position: 100%;"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-3.webp" alt="Photo 3"
+            style="object-position: 0%;"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-4.webp" alt="Photo 4"
+            style="object-position: 100%;"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-5.webp" alt="Photo 5"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-6.webp" alt="Photo 6"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-7.webp" alt="Photo 7"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-8.webp" alt="Photo 8"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-9.webp" alt="Photo 9"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-10.webp" alt="Photo 10"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-11.webp" alt="Photo 11"></div>
+        <div class="carousel-slide"><img class="carousel-img" src="images/gallery-12.webp" alt="Photo 12"
+            style="object-position: 0% 20%;"></div>
+      </div>
+
+      <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="carousel-dots" id="carouselDots" aria-hidden="true"></div>
   </section>
 
   <!-- ============ GIFT ============ -->
@@ -373,6 +432,27 @@
     <p>With love, Jan Axl &amp; Maribel</p>
     <p class="footer-date">10 &middot; 09 &middot; 2026</p>
   </footer>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close enlarged photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M5 5L19 19" />
+        <path d="M19 5L5 19" />
+      </svg>
+    </button>
+    <button class="lightbox-arrow lightbox-arrow-prev" id="lightboxPrev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+    </button>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="" />
+    <button class="lightbox-arrow lightbox-arrow-next" id="lightboxNext" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
 
   <script src="script.js"></script>
 </body>
