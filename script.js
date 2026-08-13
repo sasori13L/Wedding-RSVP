@@ -124,28 +124,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (bgMusic && musicToggle) {
-    // Try to autoplay as soon as the page loads.
-    const tryAutoplay = () => {
-      bgMusic.play()
-        .then(() => setPlayingState(true))
-        .catch(() => {
-          // Autoplay was blocked (standard browser policy for unmuted audio).
-          // Fall back to starting on the very first tap/click anywhere on the page.
-          setPlayingState(false);
-          const startOnFirstInteraction = () => {
-            bgMusic.play().then(() => setPlayingState(true)).catch(() => { });
-            document.removeEventListener('click', startOnFirstInteraction);
-            document.removeEventListener('touchstart', startOnFirstInteraction);
-          };
-          document.addEventListener('click', startOnFirstInteraction, { once: true });
-          document.addEventListener('touchstart', startOnFirstInteraction, { once: true });
-        });
-    };
+    let hasUnmutedOnce = false;
 
-    tryAutoplay();
+    // Browsers allow silent (muted) autoplay, so start the track muted
+    // right away. The button still shows "play" since there's no sound yet.
+    bgMusic.muted = true;
+    bgMusic.play().catch(() => {
+      // Even muted autoplay was blocked; it will simply start on first interaction below.
+    });
 
-    // Manual toggle button
+    function unmuteAndPlay() {
+      if (hasUnmutedOnce) return;
+      hasUnmutedOnce = true;
+      bgMusic.muted = false;
+      bgMusic.play().then(() => setPlayingState(true)).catch(() => setPlayingState(false));
+    }
+
+    // The very first tap/click/scroll/keypress anywhere on the page
+    // unmutes the already-running track, so it feels like it "was playing" all along.
+    ['click', 'touchstart', 'scroll', 'keydown'].forEach((evt) => {
+      document.addEventListener(evt, unmuteAndPlay, { once: true, passive: true });
+    });
+
+    // Manual toggle button: also counts as the unmute interaction, then behaves as play/pause
     musicToggle.addEventListener('click', () => {
+      if (!hasUnmutedOnce) {
+        unmuteAndPlay();
+        return;
+      }
       if (bgMusic.paused) {
         bgMusic.play().then(() => setPlayingState(true)).catch(() => { });
       } else {
