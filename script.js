@@ -1,579 +1,81 @@
-/* ============================================================
-   Jan Axl & Maribel — Wedding Invitation
-   Palette: Beige #F8F3EA · Warm Beige #EFE4D3 · Lilac #DCCBEA
-            Purple #9A7DB8 · Deep Purple #6B4E8E · Plum #3F2B54
-   Type: Cormorant Garamond (display/body) · Jost (utility)
-         Alex Brush (script accent, used sparingly)
-   ============================================================ */
+// ============================================================
+// Jan Axl & Maribel — Wedding Invitation interactions
+// ============================================================
 
-:root {
-  --ivory: #F8F3EA;
-  --cream: #EFE4D3;
-  --willow: #DCCBEA;
-  --sage: #9A7DB8;
-  --sage - deep: #6B4E8E;
-  --moss: #3F2B54;
-  --ink: #362A45;
-  --ink - soft: #5E4E72;
+document.addEventListener('DOMContentLoaded', () => {
 
-  --font - display: 'Cormorant Garamond', serif;
-  --font - script: 'Alex Brush', cursive;
-  --font - utility: 'Jost', sans - serif;
+  /* ---------- Loader ---------- */
+  const loader = document.getElementById('loader');
+  window.addEventListener('load', () => {
+    setTimeout(() => loader && loader.classList.add('hidden'), 300);
+  });
+  // Fallback in case 'load' already fired or is slow
+  setTimeout(() => loader && loader.classList.add('hidden'), 2000);
 
-  --max - width: 1100px;
-  --section - pad: clamp(60px, 10vw, 120px);
-}
-
-* { box- sizing: border - box; }
-
-html { scroll - behavior: smooth; }
-
-body {
-  margin: 0;
-  background: var(--ivory);
-  color: var(--ink);
-  font - family: var(--font - display);
-  overflow - x: hidden;
-}
-
-img { max - width: 100 %; display: block; }
-
-/* ---------- Reduced motion ---------- */
-@media(prefers - reduced - motion: reduce) {
-  html { scroll - behavior: auto; }
-  * { animation- duration: 0.01ms!important; animation - iteration - count: 1!important; transition - duration: 0.01ms!important;
-}
-}
-
-/* ---------- Loader ---------- */
-.loader {
-  position: fixed;
-  inset: 0;
-  background: var(--ivory);
-  z - index: 999;
-  display: flex;
-  align - items: center;
-  justify - content: center;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
-}
-.loader.hidden { opacity: 0; visibility: hidden; }
-.loader - leaf {
-  color: var(--sage - deep);
-  animation: sway 1.8s ease -in -out infinite;
-}
-@keyframes sway {
-  0 %, 100 % { transform: rotate(-4deg); }
-  50 % { transform: rotate(4deg); }
-}
-
-/* ---------- Ribbon ---------- */
-.ribbon {
-  background: var(--moss);
-  color: var(--cream);
-  font - family: var(--font - utility);
-  font - size: 0.68rem;
-  letter - spacing: 0.18em;
-  text - transform: uppercase;
-  text - align: center;
-  padding: 10px 12px;
-  display: flex;
-  justify - content: center;
-  gap: 10px;
-  flex - wrap: wrap;
-}
-.ribbon - dot { color: var(--willow); }
-
-/* ---------- Shared type helpers ---------- */
-.eyebrow {
-  font - family: var(--font - utility);
-  font - size: 0.72rem;
-  letter - spacing: 0.32em;
-  text - transform: uppercase;
-  color: var(--sage - deep);
-  text - align: center;
-  margin: 0 0 14px;
-}
-.eyebrow - light { color: var(--willow); }
-
-.section - title {
-  font - family: var(--font - display);
-  font - weight: 500;
-  font - size: clamp(2rem, 4vw, 2.8rem);
-  text - align: center;
-  margin: 0 0 34px;
-  color: var(--moss);
-}
-.section - title - light { color: var(--ivory); }
-
-/* ---------- Buttons ---------- */
-.btn {
-  display: inline - block;
-  font - family: var(--font - utility);
-  font - size: 0.78rem;
-  letter - spacing: 0.22em;
-  text - transform: uppercase;
-  text - decoration: none;
-  padding: 16px 42px;
-  border - radius: 2px;
-  transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease, box - shadow 0.35s ease;
-}
-.btn - outline {
-  border: 1px solid var(--ivory);
-  color: var(--ivory);
-  background: transparent;
-}
-.btn - outline:hover {
-  background: var(--ivory);
-  color: var(--moss);
-  transform: translateY(-2px);
-}
-.btn - solid {
-  background: var(--ivory);
-  color: var(--moss);
-  box - shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
-}
-.btn - solid:hover {
-  background: var(--willow);
-  transform: translateY(-2px);
-}
-
-/* ---------- Hero ---------- */
-.hero {
-  position: relative;
-  min - height: 100svh;
-  display: flex;
-  flex - direction: column;
-  align - items: center;
-  justify - content: center;
-  overflow: hidden;
-  background: linear - gradient(180deg, var(--moss) 0 %, var(--sage - deep) 55 %, var(--sage) 100 %);
-}
-.hero - photo - placeholder {
-  position: absolute;
-  inset: 0;
-  z - index: 0;
-}
-.hero - veil {
-  position: absolute;
-  inset: 0;
-  background:
-  radial - gradient(ellipse at 50 % 20 %, rgba(52, 57, 47, 0.15) 0 %, rgba(52, 57, 47, 0.55) 75 %),
-    linear - gradient(180deg, rgba(52, 57, 47, 0.35) 0 %, rgba(52, 57, 47, 0.65) 100 %);
-  z - index: 1;
-}
-.hero - content {
-  position: relative;
-  z - index: 2;
-  text - align: center;
-  color: var(--ivory);
-  padding: 0 24px;
-  display: flex;
-  flex - direction: column;
-  align - items: center;
-}
-.hero - content.eyebrow {
-  color: var(--willow);
-}
-.hero - names {
-  margin: 6px 0 18px;
-  font - weight: 500;
-  font - size: clamp(2.6rem, 9vw, 5.2rem);
-  line - height: 1;
-  display: flex;
-  align - items: center;
-  gap: 0.4em;
-  flex - wrap: wrap;
-  justify - content: center;
-}
-.hero - names.amp {
-  font - family: var(--font - script);
-  font - size: 0.7em;
-  color: var(--willow);
-  line - height: 1;
-  padding: 0 0.05em;
-}
-.hero - divider { color: var(--willow); margin - bottom: 18px; }
-.hero - date {
-  font - family: var(--font - utility);
-  font - size: 0.95rem;
-  letter - spacing: 0.14em;
-  margin: 0 0 34px;
-  color: var(--ivory);
-}
-
-.scroll - cue {
-  position: absolute;
-  bottom: 28px;
-  left: 50 %;
-  transform: translateX(-50 %);
-  z - index: 2;
-  width: 22px;
-  height: 36px;
-  border: 1px solid var(--ivory);
-  border - radius: 12px;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-.scroll - cue span {
-  display: block;
-  width: 4px;
-  height: 8px;
-  margin: 6px auto 0;
-  border - radius: 2px;
-  background: var(--ivory);
-  animation: scrollDown 1.8s ease -in -out infinite;
-}
-@keyframes scrollDown {
-  0 % { transform: translateY(0); opacity: 1; }
-  70 % { transform: translateY(10px); opacity: 0; }
-  100 % { transform: translateY(0); opacity: 0; }
-}
-
-/* Hero entrance reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: heroReveal 0.9s ease forwards;
-}
-.hero - content.eyebrow.reveal { animation - delay: 0.2s; }
-.hero - names.reveal { animation - delay: 0.4s; }
-.hero - divider.reveal { animation - delay: 0.6s; }
-.hero - date.reveal { animation - delay: 0.75s; }
-.hero - content.btn.reveal { animation - delay: 0.9s; }
-@keyframes heroReveal {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ---------- Placeholder boxes (generic) ---------- */
-.placeholder - box {
-  width: 100 %;
-  height: 100 %;
-  min - height: 220px;
-  display: flex;
-  flex - direction: column;
-  align - items: center;
-  justify - content: center;
-  gap: 8px;
-  text - align: center;
-  background:
-  repeating - linear - gradient(45deg, rgba(95, 113, 97, 0.06) 0 12px, rgba(95, 113, 97, 0.1) 12px 24px);
-  border: 1px dashed var(--sage);
-  color: var(--sage - deep);
-  font - family: var(--font - utility);
-}
-.placeholder - box p {
-  margin: 0;
-  font - family: var(--font - display);
-  font - size: 1.1rem;
-  color: var(--moss);
-}
-.placeholder - box span {
-  font - size: 0.68rem;
-  letter - spacing: 0.1em;
-  text - transform: uppercase;
-  color: var(--sage - deep);
-}
-.hero - photo - placeholder.placeholder - box {
-  border: none;
-  background:
-  repeating - linear - gradient(45deg, rgba(250, 248, 243, 0.05) 0 14px, rgba(250, 248, 243, 0.09) 14px 28px),
-    linear - gradient(180deg, var(--moss), var(--sage - deep));
-}
-.hero - photo - placeholder.placeholder - box p,
-.hero - photo - placeholder.placeholder - box span { color: var(--ivory); }
-
-/* Real photo variants: fill their container and crop gracefully at any
-   screen size instead of stretching or overflowing. */
-.hero - photo - placeholder img {
-  position: absolute;
-  inset: 0;
-  width: 100 %;
-  height: 100 %;
-  object - fit: cover;
-  object - position: 50 % 50 %;
-}
-
-img.placeholder - box {
-  display: block;
-  min - height: 0;
-  background: none;
-  border: 1px solid var(--willow);
-  width: 100 %;
-  height: 100 %;
-  object - fit: cover;
-}
-
-.map - placeholder img.map - box {
-  width: 100 %;
-  height: clamp(240px, 40vw, 420px);
-  object - fit: cover;
-  border - radius: 4px;
-}
-
-.gallery - grid img.gallery - box {
-  width: 100 %;
-  height: 100 %;
-  object - fit: cover;
-  object - position: 50 % 50 %;
-  border - radius: 2px;
-}
-
-/* ---------- Leaf dividers ---------- */
-.leaf - divider {
-  display: flex;
-  justify - content: center;
-  color: var(--sage);
-  margin - bottom: 26px;
-}
-.leaf - divider.light { color: var(--willow); }
-
-/* ---------- Countdown ---------- */
-.countdown - section {
-  padding: var(--section - pad) 24px 70px;
-  text - align: center;
-}
-.countdown {
-  display: flex;
-  justify - content: center;
-  align - items: center;
-  gap: clamp(10px, 3vw, 28px);
-  flex - wrap: wrap;
-}
-.countdown - unit {
-  display: flex;
-  flex - direction: column;
-  align - items: center;
-  min - width: 70px;
-}
-.countdown - number {
-  font - size: clamp(2.2rem, 6vw, 3.4rem);
-  color: var(--moss);
-  font - weight: 500;
-  line - height: 1;
-}
-.countdown - label {
-  font - family: var(--font - utility);
-  font - size: 0.66rem;
-  letter - spacing: 0.2em;
-  text - transform: uppercase;
-  color: var(--sage - deep);
-  margin - top: 8px;
-}
-.countdown - sep {
-  font - size: 2rem;
-  color: var(--willow);
-  transform: translateY(-8px);
-}
-
-/* ---------- Message ---------- */
-.message - section {
-  max - width: 680px;
-  margin: 0 auto;
-  padding: 0 24px var(--section - pad);
-  text - align: center;
-}
-.message - text {
-  font - size: clamp(1.15rem, 2vw, 1.5rem);
-  line - height: 1.7;
-  font - style: italic;
-  color: var(--ink - soft);
-  margin: 0 0 24px;
-}
-.signature {
-  font - family: var(--font - script);
-  font - size: 2.2rem;
-  color: var(--sage - deep);
-  margin: 0;
-}
-
-/* ---------- Details ---------- */
-.details - section {
-  background: var(--cream);
-  padding: var(--section - pad) 24px;
-}
-.details - grid {
-  max - width: var(--max - width);
-  margin: 0 auto;
-  display: grid;
-  grid - template - columns: repeat(auto - fit, minmax(220px, 1fr));
-  gap: 28px;
-}
-.detail - card {
-  background: var(--ivory);
-  border: 1px solid var(--willow);
-  padding: 40px 28px;
-  text - align: center;
-  border - radius: 4px;
-}
-.detail - icon {
-  color: var(--sage - deep);
-  margin - bottom: 14px;
-}
-.detail - card h3 {
-  font - family: var(--font - utility);
-  font - size: 0.72rem;
-  letter - spacing: 0.24em;
-  text - transform: uppercase;
-  color: var(--sage - deep);
-  margin: 0 0 12px;
-}
-.detail - card p {
-  margin: 0;
-  font - size: 1.05rem;
-  color: var(--ink - soft);
-}
-.detail - highlight {
-  font - size: 1.4rem!important;
-  color: var(--moss)!important;
-  margin - top: 4px!important;
-}
-
-.map - placeholder {
-  max - width: var(--max - width);
-  margin: 40px auto 0;
-}
-.map - box { min - height: 320px; }
-
-/* ---------- Theme / attire ---------- */
-.theme - section {
-  padding: var(--section - pad) 24px;
-  text - align: center;
-}
-.theme - copy {
-  max - width: 620px;
-  margin: 0 auto 40px;
-  font - size: 1.15rem;
-  line - height: 1.7;
-  color: var(--ink - soft);
-}
-.palette {
-  display: flex;
-  justify - content: center;
-  flex - wrap: wrap;
-  gap: 16px;
-  max - width: 700px;
-  margin: 0 auto;
-}
-.swatch {
-  width: 96px;
-  height: 96px;
-  border - radius: 50 %;
-  display: flex;
-  align - items: flex - end;
-  justify - content: center;
-  box - shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-}
-.swatch span {
-  font - family: var(--font - utility);
-  font - size: 0.6rem;
-  letter - spacing: 0.05em;
-  color: var(--ink);
-  background: rgba(250, 248, 243, 0.85);
-  padding: 3px 8px;
-  border - radius: 10px;
-  margin - bottom: -10px;
-  white - space: nowrap;
-}
-
-/* ---------- Gallery ---------- */
-.gallery - section {
-  background: var(--cream);
-  padding: var(--section - pad) 24px;
-}
-.gallery - grid {
-  max - width: var(--max - width);
-  margin: 0 auto;
-  display: grid;
-  grid - template - columns: repeat(3, 1fr);
-  grid - auto - rows: clamp(120px, 16vw, 200px);
-  gap: 16px;
-}
-.gallery - box { min - height: unset; }
-.gallery - tall { grid - row: span 2; }
-@media(max - width: 640px) {
-  .gallery - grid {
-    grid - template - columns: repeat(2, 1fr);
-    grid - auto - rows: clamp(130px, 26vw, 190px);
+  /* ---------- Scroll cue ---------- */
+  const scrollCue = document.getElementById('scrollCue');
+  if (scrollCue) {
+    scrollCue.addEventListener('click', () => {
+      document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+    });
   }
-  /* Reorder to 1, 4, 2, 5, 3, 6 on smaller screens */
-  .gallery - grid img: nth - child(1) { order: 1; }
-  .gallery - grid img: nth - child(4) { order: 2; }
-  .gallery - grid img: nth - child(2) { order: 3; }
-  .gallery - grid img: nth - child(5) { order: 4; }
-  .gallery - grid img: nth - child(3) { order: 5; }
-  .gallery - grid img: nth - child(6) { order: 6; }
-}
 
-/* ---------- Gift ---------- */
-.gift - section {
-  padding: var(--section - pad) 24px calc(var(--section - pad) - 20px);
-  text - align: center;
-}
-.gift - copy {
-  max - width: 560px;
-  margin: 0 auto 28px;
-  font - size: 1.1rem;
-  line - height: 1.7;
-  color: var(--ink - soft);
-}
-.gift - icon {
-  display: flex;
-  justify - content: center;
-  color: var(--sage - deep);
-}
+  /* ---------- Countdown timer ---------- */
+  // Wedding date/time: October 9, 2026, 2:00 PM (Philippine Time, UTC+8)
+  const WEDDING_DATE = new Date('2026-10-09T14:00:00+08:00').getTime();
 
-/* ---------- RSVP ---------- */
-.rsvp - section {
-  background: linear - gradient(180deg, var(--sage - deep), var(--moss));
-  color: var(--ivory);
-  text - align: center;
-  padding: var(--section - pad) 24px;
-}
-.rsvp - copy {
-  max - width: 520px;
-  margin: 0 auto 36px;
-  font - size: 1.1rem;
-  line - height: 1.7;
-  color: var(--willow);
-}
-.rsvp - note {
-  font - family: var(--font - utility);
-  font - size: 0.72rem;
-  letter - spacing: 0.08em;
-  color: var(--willow);
-  margin - top: 18px;
-}
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minutesEl = document.getElementById('cd-minutes');
+  const secondsEl = document.getElementById('cd-seconds');
 
-/* ---------- Footer ---------- */
-.site - footer {
-  background: var(--moss);
-  color: var(--willow);
-  text - align: center;
-  padding: 46px 24px 40px;
-}
-.footer - monogram {
-  font - family: var(--font - script);
-  font - size: 2.6rem;
-  color: var(--ivory);
-  margin - bottom: 6px;
-}
-.site - footer p { margin: 4px 0; font - size: 0.95rem; }
-.footer - date {
-  font - family: var(--font - utility);
-  letter - spacing: 0.18em;
-  font - size: 0.7rem;
-  text - transform: uppercase;
-  color: var(--sage);
-}
+  function pad(n) {
+    return String(n).padStart(2, '0');
+  }
 
-/* ---------- Scroll reveal ---------- */
-.reveal - on - scroll {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.reveal - on - scroll.is - visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+  function updateCountdown() {
+    const now = Date.now();
+    const distance = WEDDING_DATE - now;
+
+    if (distance <= 0) {
+      if (daysEl) daysEl.textContent = '00';
+      if (hoursEl) hoursEl.textContent = '00';
+      if (minutesEl) minutesEl.textContent = '00';
+      if (secondsEl) secondsEl.textContent = '00';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (daysEl) daysEl.textContent = pad(days);
+    if (hoursEl) hoursEl.textContent = pad(hours);
+    if (minutesEl) minutesEl.textContent = pad(minutes);
+    if (secondsEl) secondsEl.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ---------- Scroll reveal for sections ---------- */
+  const revealEls = document.querySelectorAll('.reveal-on-scroll');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach((el) => observer.observe(el));
+  } else {
+    // Fallback: reveal everything immediately
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  }
+
+});
