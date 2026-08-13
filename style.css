@@ -204,14 +204,22 @@ img {
   background: var(--ivory);
   border-radius: 2px;
   transform-origin: bottom;
-  animation: none;
-  transform: scaleY(0.3);
 }
 
-/* Paused state: static, low bars */
-.music-toggle:not(.is-playing) .music-bars span {
-  animation: none;
-  transform: scaleY(0.25);
+/* Paused state: show a static play triangle, hide the bars */
+.music-play-icon {
+  display: block;
+  color: var(--ivory);
+  margin-left: 2px;
+  /* optical centering for the triangle shape */
+}
+
+.music-toggle:not(.is-playing) .music-bars {
+  display: none;
+}
+
+.music-toggle.is-playing .music-play-icon {
+  display: none;
 }
 
 /* Playing state: bars bounce like an equalizer */
